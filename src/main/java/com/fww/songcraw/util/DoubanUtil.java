@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -26,37 +28,51 @@ public class DoubanUtil {
 	private static String getSongSids_url = "http://douban.fm/j/v2/redheart/basic";
 
 	private static List<SongInfo> songInfos = null;
+	
+	private String savePath = null;
 
 	static{
 		headers = new HashMap<String, String>();
 		headers.put("Host", "douban.fm");
-//		headers.put("Connection", "keep-alive");
-//		headers.put("Content-Length", "206");
-//		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
-//		headers.put("Origin", "http://douban.fm");
 		headers.put("X-Requested-With", "XMLHttpRequest");
-		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36");
-//		headers.put("Content-Type", "application/x-www-form-urlencoded");
+		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36");
 		headers.put("Referer", "http://douban.fm/mine");
+		headers.put("Connection", "keep-alive");
+//		headers.put("Content-Length", "206");
+		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
+		headers.put("Origin", "https://douban.fm");
+		headers.put("Content-Type", "application/x-www-form-urlencoded");
 //		headers.put("Accept-Encoding", "gzip, deflate");
-//		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
 		
 		params = new HashMap<String, String>();
-		params.put("kbps", "320");
-		params.put("ck", "fCVy");
+		params.put("kbps", "128");
 	}
 	
-	public static void getSongInfosAndSave(String getSongSids_cookie, String getSongInfos_cookie, String savePath){
-		String[] songSids = getSongSids(getSongSids_cookie);
-//		String[] songSids = {"174646|967826|186827|1030249|1002131|280187|107686"};
-		songInfos  = getSongInfos(songSids, getSongInfos_cookie);
+	public DoubanUtil(String cookieString, String savePath) throws Exception {
+		this.savePath = savePath;
 		
-		saveSongInfos(songInfos, savePath);
+		//设置cookie
+		headers.put("Cookie", cookieString);
+		
+		//获取cookie[ck]的值
+		Pattern pattern = Pattern.compile("ck=(.+?);");
+	    Matcher matcher = pattern.matcher(cookieString);
+	    if (matcher.find()) {
+	    	params.put("ck", matcher.group(1));
+	    } else {
+	    	throw new Exception("not find cookie ck");
+	    }
 	}
 	
-	private static String[] getSongSids(String cookie){
-		headers.put("Cookie", cookie);
-		
+	public void getSongInfosAndSave(){
+		String[] songSids = getSongSids();
+//		String[] songSids = {"1992019","1454157","154954","1792548"};
+		getSongInfos(songSids);
+		saveSongInfos();
+	}
+	
+	private String[] getSongSids(){
 		WebUtil webUtil = new WebUtil();
 		webUtil.requestByGet(getSongSids_url, headers, null);
 		
@@ -77,10 +93,8 @@ public class DoubanUtil {
 		return songSids;
 	}
 	
-	private static List<SongInfo> getSongInfos(String[] songSids, String cookie){
-		headers.put("Cookie", cookie);
-		
-		List<SongInfo> songs = new ArrayList<SongInfo>();
+	private void getSongInfos(String[] songSids){
+		songInfos = new ArrayList<SongInfo>();
 		for (int index = 0; index < songSids.length; index += increase) {
 			String sids = "";
 			for (int i = index; i < increase; ++i) {
@@ -89,19 +103,15 @@ public class DoubanUtil {
 				}
 				sids += songSids[i] + "|";
 			}
-			
 			if (sids.endsWith("|")) {
 				sids = sids.substring(0, sids.length() - 1);
 			}
-			
-			getSongInfo(songs, sids);
-			
+			getSongInfo(sids);
 		}
 		
-
-		for(SongInfo song : songs){
+		for(SongInfo song : songInfos){
 			String str = song.getArtist() + song.getTitle();
-			for(SongInfo song2 : songs){
+			for(SongInfo song2 : songInfos){
 				if(song == song2 || song2.isHaveRepeatName()){
 					continue;
 				}
@@ -112,11 +122,9 @@ public class DoubanUtil {
 				}
 			}
 		}
-		
-		return songs;
 	}
 
-	private static void getSongInfo(List<SongInfo> songs, String sids) {
+	private void getSongInfo(String sids) {
 
 		params.put("sids", sids);
 		
@@ -130,14 +138,14 @@ public class DoubanUtil {
 				songInfo.setArtist(jsonObject.getString("artist"));
 				songInfo.setUrl(jsonObject.getString("url"));
 				songInfo.setTitle(jsonObject.getString("title"));
-				songs.add(songInfo);
+				songInfos.add(songInfo);
 			}
 		} else {
 			System.out.println("请求" + sids + "失败!!");
 		}
 	}
 	
-	private static boolean saveSongInfos(List<SongInfo> songInfos, String savePath){
+	private boolean saveSongInfos(){
 		File file = new File(savePath + "/douban.txt");
 		
 		PrintWriter pw = null;
@@ -162,7 +170,7 @@ public class DoubanUtil {
 		}
 	}
 
-	public static void downloadSongs(String savePath) {
+	public void downloadSongs(String savePath) {
 		DownLoadThread.setSongs(songInfos);
 		for(int i = 0; i < 3; ++i){
 			DownLoadThread downLoadThread = new DownLoadThread(savePath);
