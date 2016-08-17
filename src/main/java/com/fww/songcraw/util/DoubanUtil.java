@@ -23,9 +23,9 @@ public class DoubanUtil {
 	
 	private static int increase = 1000;
 
-	private static String getSongInfo_url = "http://douban.fm/j/v2/redheart/songs";
+	private static String getSongInfo_url = "https://douban.fm/j/v2/redheart/songs";
 
-	private static String getSongSids_url = "http://douban.fm/j/v2/redheart/basic";
+	private static String getSongSids_url = "https://douban.fm/j/v2/redheart/basic";
 
 	private static List<SongInfo> songInfos = null;
 	
@@ -37,16 +37,16 @@ public class DoubanUtil {
 		headers.put("X-Requested-With", "XMLHttpRequest");
 		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36");
 		headers.put("Referer", "http://douban.fm/mine");
-		headers.put("Connection", "keep-alive");
-//		headers.put("Content-Length", "206");
-		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
+//		headers.put("Connection", "keep-alive");
+//		headers.put("Content-Length", "212");
+//		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
 		headers.put("Origin", "https://douban.fm");
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
 //		headers.put("Accept-Encoding", "gzip, deflate");
-		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+//		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
 		
 		params = new HashMap<String, String>();
-		params.put("kbps", "128");
+		params.put("kbps", "320");
 	}
 	
 	public DoubanUtil(String cookieString, String savePath) throws Exception {
@@ -59,7 +59,9 @@ public class DoubanUtil {
 		Pattern pattern = Pattern.compile("ck=(.+?);");
 	    Matcher matcher = pattern.matcher(cookieString);
 	    if (matcher.find()) {
-	    	params.put("ck", matcher.group(1));
+	    	String group = matcher.group(1);
+	    	System.out.println(group);
+	    	params.put("ck", group);
 	    } else {
 	    	throw new Exception("not find cookie ck");
 	    }
@@ -67,7 +69,7 @@ public class DoubanUtil {
 	
 	public void getSongInfosAndSave(){
 		String[] songSids = getSongSids();
-//		String[] songSids = {"1992019","1454157","154954","1792548"};
+//		String[] songSids = "2601719|1992019|1454157|2091696|1387152|1957265|475519|1464354|1382824|1644945|379650|154954|1792548|1451365|2235199|18497|321204|549583|1615839|2088643".split("\\|");
 		getSongInfos(songSids);
 		saveSongInfos();
 	}
