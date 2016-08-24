@@ -1,4 +1,4 @@
-package com.fww.songcraw.util;
+package com.funwewhere.doubanfmcrawl.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,7 +17,6 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
 
 public class WebUtil {
 	

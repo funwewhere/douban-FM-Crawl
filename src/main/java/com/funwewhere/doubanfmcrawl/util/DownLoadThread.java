@@ -1,8 +1,8 @@
-package com.fww.songcraw.util;
+package com.funwewhere.doubanfmcrawl.util;
 
 import java.util.List;
 
-import com.fww.songcraw.bean.SongInfo;
+import com.funwewhere.doubanfmcrawl.bean.SongInfo;
 
 public class DownLoadThread implements Runnable {
 	

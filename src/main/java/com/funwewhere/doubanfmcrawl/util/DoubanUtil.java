@@ -1,4 +1,4 @@
-package com.fww.songcraw.util;
+package com.funwewhere.doubanfmcrawl.util;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.funwewhere.doubanfmcrawl.bean.SongInfo;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import com.fww.songcraw.bean.SongInfo;
 
 public class DoubanUtil {
 	
@@ -84,13 +84,12 @@ public class DoubanUtil {
 		String[] songSids = new String[jsonSongs.size()];
 		
 		int i = 0;
-		Iterator iterator = jsonSongs.iterator();
+		Iterator<?> iterator = jsonSongs.iterator();
 		while(iterator.hasNext()){
 			JSONObject next = (JSONObject) iterator.next();
 			String sid = next.getString("sid");
 			songSids[i++] = sid;
 		}
-		
 		System.out.println("一共" + i + "首歌");
 		return songSids;
 	}

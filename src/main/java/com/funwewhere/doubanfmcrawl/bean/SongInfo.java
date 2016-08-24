@@ -1,4 +1,4 @@
-package com.fww.songcraw.bean;
+package com.funwewhere.doubanfmcrawl.bean;
 
 public class SongInfo {
 	private String artist;
