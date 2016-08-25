@@ -34,16 +34,16 @@ public class DoubanUtil {
 	static{
 		headers = new HashMap<String, String>();
 		headers.put("Host", "douban.fm");
+		headers.put("Connection", "keep-alive");
+		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
 		headers.put("X-Requested-With", "XMLHttpRequest");
 		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36");
-		headers.put("Referer", "http://douban.fm/mine");
-//		headers.put("Connection", "keep-alive");
-//		headers.put("Content-Length", "212");
-//		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
-		headers.put("Origin", "https://douban.fm");
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
-//		headers.put("Accept-Encoding", "gzip, deflate");
-//		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+		headers.put("Referer", "https://douban.fm/");
+//		headers.put("Accept-Encoding", "gzip, deflate, sdch, br");
+		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+//		headers.put("Content-Length", "212");
+//		headers.put("Origin", "https://douban.fm");
 		
 		params = new HashMap<String, String>();
 		params.put("kbps", "320");
@@ -78,7 +78,9 @@ public class DoubanUtil {
 		WebUtil webUtil = new WebUtil();
 		webUtil.requestByGet(getSongSids_url, headers, null);
 		
-		JSONObject json = JSONObject.fromObject(webUtil.getReponseBody());
+		String reponseBody = webUtil.getReponseBody();
+		System.out.println(reponseBody);
+		JSONObject json = JSONObject.fromObject(reponseBody);
 		JSONArray jsonSongs = json.getJSONArray("songs");
 		
 		String[] songSids = new String[jsonSongs.size()];

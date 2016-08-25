@@ -21,17 +21,17 @@ public class GetSongInfoServlet extends HttpServlet{
 		System.out.println(cookieString);
 		System.out.println(savePath);
 		
-//		boolean flag = false;
-//		DoubanUtil douban;
-//		try {
-//			douban = new DoubanUtil(cookieString, savePath);
-//			douban.getSongInfosAndSave();
-//			if (flag) {
-//				douban.downloadSongs(savePath);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		boolean flag = false;
+		DoubanUtil douban;
+		try {
+			douban = new DoubanUtil(cookieString, savePath);
+			douban.getSongInfosAndSave();
+			if (flag) {
+				douban.downloadSongs(savePath);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

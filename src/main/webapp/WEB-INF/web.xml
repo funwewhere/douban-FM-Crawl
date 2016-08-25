@@ -11,6 +11,6 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>getSongInfo</servlet-name>
-  	<url-pattern>getSongInfo</url-pattern>
+  	<url-pattern>/getSongInfo</url-pattern>
   </servlet-mapping>
 </web-app>
