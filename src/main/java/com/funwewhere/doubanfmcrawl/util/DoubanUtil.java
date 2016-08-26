@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.funwewhere.doubanfmcrawl.bean.SongInfo;
+import com.funwewhere.doubanfmcrawl.http.WebRequestUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -67,19 +68,15 @@ public class DoubanUtil {
 	    }
 	}
 	
-	public void getSongInfosAndSave(){
+	public void getSongInfosAndSave() throws Exception{
 		String[] songSids = getSongSids();
 //		String[] songSids = "2601719|1992019|1454157|2091696|1387152|1957265|475519|1464354|1382824|1644945|379650|154954|1792548|1451365|2235199|18497|321204|549583|1615839|2088643".split("\\|");
 		getSongInfos(songSids);
 		saveSongInfos();
 	}
 	
-	private String[] getSongSids(){
-		WebUtil webUtil = new WebUtil();
-		webUtil.requestByGet(getSongSids_url, headers, null);
-		
-		String reponseBody = webUtil.getReponseBody();
-		System.out.println(reponseBody);
+	private String[] getSongSids() throws Exception{
+		String reponseBody = WebRequestUtil.requestByGet(getSongSids_url, headers, null);
 		JSONObject json = JSONObject.fromObject(reponseBody);
 		JSONArray jsonSongs = json.getJSONArray("songs");
 		
@@ -96,7 +93,7 @@ public class DoubanUtil {
 		return songSids;
 	}
 	
-	private void getSongInfos(String[] songSids){
+	private void getSongInfos(String[] songSids) throws Exception{
 		songInfos = new ArrayList<SongInfo>();
 		for (int index = 0; index < songSids.length; index += increase) {
 			String sids = "";
@@ -127,24 +124,19 @@ public class DoubanUtil {
 		}
 	}
 
-	private void getSongInfo(String sids) {
+	private void getSongInfo(String sids) throws Exception {
 
 		params.put("sids", sids);
-		
-		WebUtil webUtil = new WebUtil();
-		if(webUtil.requestByPost(getSongInfo_url, headers, params)){
-			JSONArray jsonArray = JSONArray.fromObject(webUtil.getReponseBody());
-			for (int j = 0; j < jsonArray.size(); ++j) {
-				JSONObject jsonObject = jsonArray.getJSONObject(j);
-				SongInfo songInfo = new SongInfo();
-				songInfo.setSid(jsonObject.getString("sid"));
-				songInfo.setArtist(jsonObject.getString("artist"));
-				songInfo.setUrl(jsonObject.getString("url"));
-				songInfo.setTitle(jsonObject.getString("title"));
-				songInfos.add(songInfo);
-			}
-		} else {
-			System.out.println("请求" + sids + "失败!!");
+		String reponseBody = WebRequestUtil.requestByPost(getSongInfo_url, headers, params);
+		JSONArray jsonArray = JSONArray.fromObject(reponseBody);
+		for (int j = 0; j < jsonArray.size(); ++j) {
+			JSONObject jsonObject = jsonArray.getJSONObject(j);
+			SongInfo songInfo = new SongInfo();
+			songInfo.setSid(jsonObject.getString("sid"));
+			songInfo.setArtist(jsonObject.getString("artist"));
+			songInfo.setUrl(jsonObject.getString("url"));
+			songInfo.setTitle(jsonObject.getString("title"));
+			songInfos.add(songInfo);
 		}
 	}
 	
