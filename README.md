@@ -5,8 +5,5 @@
 （为douban打个广告：升级成PRO用户下载的歌曲质量更高哟~~手动滑稽~）
 
 ####快速使用
-在Main函数中替换自己的cookieString，savePath
-
-cookieString：在登录doubanFM后，任何一个request头里的cookie
-
-savePath：信息文件的保存路径
+运行web项目，浏览器输入localhost:8080/doubanCrawl/
+登录doubanFM，找到douban随便哪个request中的Cookie（chrome、firefox的debug模式下），粘贴到获取框中，点击获取即可
