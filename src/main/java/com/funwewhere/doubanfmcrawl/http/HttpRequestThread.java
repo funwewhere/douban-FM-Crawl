@@ -33,7 +33,7 @@ public class HttpRequestThread extends Thread implements Callable<String>{
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     result = EntityUtils.toString(entity);
-                    System.out.println("：：：执行结果：：：" + result);
+//                    System.out.println("：：：执行结果：：：" + result);
                 }
             } finally {
                 response.close();

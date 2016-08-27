@@ -1,9 +1,45 @@
 .top{
-	margin-top: 3em;
-    background: #b4e3ff;
+	height: 5em;
+    background: #6ab158;
+}
+
+.cookieString{
+	width: 20em;
+    padding: 4px;
+    border: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+.cookieString+input{
+	cursor: pointer;
+	width: 4em;
+	padding: 4px;
+    border: 0;
+    border-radius: 0 5px 5px 0;
 }
 
 .form{
+	text-align: right;
+    margin: 0 auto;
+    width: 70%;
+    padding-top: 0.5em;
+}
+
+.data-body{
+	text-align: center;
+}
+
+.data{
 	margin: 0 auto; 
-	width: 100%
+	width: 70%;
+}
+
+.data table{
+	width: 100%;
+	text-align: center;
+}
+
+.data td{
+	text-align: center;
+    border-bottom: 2px solid #74d477;
 }

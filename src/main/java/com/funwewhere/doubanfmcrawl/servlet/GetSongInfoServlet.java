@@ -1,13 +1,17 @@
 package com.funwewhere.doubanfmcrawl.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.funwewhere.doubanfmcrawl.bean.SongInfo;
 import com.funwewhere.doubanfmcrawl.util.DoubanUtil;
+
+import net.sf.json.JSONArray;
 
 public class GetSongInfoServlet extends HttpServlet{
 
@@ -16,19 +20,13 @@ public class GetSongInfoServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String cookieString = req.getParameter("cookieString");
-		String savePath = req.getParameter("savePath");
-		
 		System.out.println(cookieString);
-		System.out.println(savePath);
-		
-		boolean flag = false;
 		DoubanUtil douban;
 		try {
-			douban = new DoubanUtil(cookieString, savePath);
-			douban.getSongInfosAndSave();
-			if (flag) {
-				douban.downloadSongs(savePath);
-			}
+			douban = new DoubanUtil(cookieString);
+			List<SongInfo> songInfos= douban.getSongInfosAndSave();
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write(JSONArray.fromObject(songInfos).toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

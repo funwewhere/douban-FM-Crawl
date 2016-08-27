@@ -30,10 +30,8 @@ public class DoubanUtil {
 
 	private static List<SongInfo> songInfos = null;
 	
-	private String savePath = null;
-
 	static{
-		headers = new HashMap<String, String>();
+		headers = new HashMap<>();
 		headers.put("Host", "douban.fm");
 		headers.put("Connection", "keep-alive");
 		headers.put("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
@@ -41,8 +39,8 @@ public class DoubanUtil {
 		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36");
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
 		headers.put("Referer", "https://douban.fm/");
-//		headers.put("Accept-Encoding", "gzip, deflate, sdch, br");
 		headers.put("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+//		headers.put("Accept-Encoding", "gzip, deflate, sdch, br");
 //		headers.put("Content-Length", "212");
 //		headers.put("Origin", "https://douban.fm");
 		
@@ -50,9 +48,7 @@ public class DoubanUtil {
 		params.put("kbps", "320");
 	}
 	
-	public DoubanUtil(String cookieString, String savePath) throws Exception {
-		this.savePath = savePath;
-		
+	public DoubanUtil(String cookieString) throws Exception {
 		//设置cookie
 		headers.put("Cookie", cookieString);
 		
@@ -68,11 +64,11 @@ public class DoubanUtil {
 	    }
 	}
 	
-	public void getSongInfosAndSave() throws Exception{
+	public List<SongInfo> getSongInfosAndSave() throws Exception{
 		String[] songSids = getSongSids();
 //		String[] songSids = "2601719|1992019|1454157|2091696|1387152|1957265|475519|1464354|1382824|1644945|379650|154954|1792548|1451365|2235199|18497|321204|549583|1615839|2088643".split("\\|");
 		getSongInfos(songSids);
-		saveSongInfos();
+		return songInfos;
 	}
 	
 	private String[] getSongSids() throws Exception{
@@ -95,12 +91,15 @@ public class DoubanUtil {
 	
 	private void getSongInfos(String[] songSids) throws Exception{
 		songInfos = new ArrayList<SongInfo>();
-		for (int index = 0; index < songSids.length; index += increase) {
+		int sidLength = songSids.length;
+		int length = 0;
+		for (int index = 0; index < sidLength; index += increase) {
 			String sids = "";
-			for (int i = index; i < increase; ++i) {
-				if(i >= songSids.length){
-					break;
-				}
+			length = index + increase;
+			if(length > sidLength){
+				length = sidLength;
+			}
+			for (int i = index; i < length; ++i) {
 				sids += songSids[i] + "|";
 			}
 			if (sids.endsWith("|")) {
@@ -140,7 +139,7 @@ public class DoubanUtil {
 		}
 	}
 	
-	private boolean saveSongInfos(){
+	private boolean saveSongInfos(String savePath){
 		File file = new File(savePath + "/douban.txt");
 		
 		PrintWriter pw = null;
