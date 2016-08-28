@@ -1,3 +1,24 @@
+body, textarea, select, input, button {
+    font-size: 12px;
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-text-size-adjust: none;
+}
+
+.text {
+    width: 100%;
+    position: relative;
+    zoom: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.artist{
+	text-align: left;
+	width: 10em;
+}
+
 .top{
 	height: 5em;
     background: #6ab158;
@@ -41,5 +62,6 @@
 
 .data td{
 	text-align: center;
+	display: table-cell;
     border-bottom: 2px solid #74d477;
 }

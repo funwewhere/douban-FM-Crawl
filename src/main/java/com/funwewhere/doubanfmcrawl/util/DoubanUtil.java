@@ -22,13 +22,15 @@ public class DoubanUtil {
 	
 	private static HashMap<String, String> params;
 	
-	private static int increase = 1000;
+	private static int increase = 50;
 
 	private static String getSongInfo_url = "https://douban.fm/j/v2/redheart/songs";
 
 	private static String getSongSids_url = "https://douban.fm/j/v2/redheart/basic";
 
 	private static List<SongInfo> songInfos = null;
+	
+	private static JSONArray responseJson = new JSONArray();
 	
 	static{
 		headers = new HashMap<>();
@@ -64,11 +66,11 @@ public class DoubanUtil {
 	    }
 	}
 	
-	public List<SongInfo> getSongInfosAndSave() throws Exception{
+	public JSONArray getSongInfosAndSave() throws Exception{
 		String[] songSids = getSongSids();
 //		String[] songSids = "2601719|1992019|1454157|2091696|1387152|1957265|475519|1464354|1382824|1644945|379650|154954|1792548|1451365|2235199|18497|321204|549583|1615839|2088643".split("\\|");
 		getSongInfos(songSids);
-		return songInfos;
+		return responseJson;
 	}
 	
 	private String[] getSongSids() throws Exception{
@@ -93,6 +95,7 @@ public class DoubanUtil {
 		songInfos = new ArrayList<SongInfo>();
 		int sidLength = songSids.length;
 		int length = 0;
+		responseJson.clear();
 		for (int index = 0; index < sidLength; index += increase) {
 			String sids = "";
 			length = index + increase;
@@ -128,15 +131,16 @@ public class DoubanUtil {
 		params.put("sids", sids);
 		String reponseBody = WebRequestUtil.requestByPost(getSongInfo_url, headers, params);
 		JSONArray jsonArray = JSONArray.fromObject(reponseBody);
-		for (int j = 0; j < jsonArray.size(); ++j) {
-			JSONObject jsonObject = jsonArray.getJSONObject(j);
-			SongInfo songInfo = new SongInfo();
-			songInfo.setSid(jsonObject.getString("sid"));
-			songInfo.setArtist(jsonObject.getString("artist"));
-			songInfo.setUrl(jsonObject.getString("url"));
-			songInfo.setTitle(jsonObject.getString("title"));
-			songInfos.add(songInfo);
-		}
+//		for (int j = 0; j < jsonArray.size(); ++j) {
+//			JSONObject jsonObject = jsonArray.getJSONObject(j);
+//			SongInfo songInfo = new SongInfo();
+//			songInfo.setSid(jsonObject.getString("sid"));
+//			songInfo.setArtist(jsonObject.getString("artist"));
+//			songInfo.setUrl(jsonObject.getString("url"));
+//			songInfo.setTitle(jsonObject.getString("title"));
+//			songInfos.add(songInfo);
+//		}
+		responseJson.addAll(jsonArray);
 	}
 	
 	private boolean saveSongInfos(String savePath){

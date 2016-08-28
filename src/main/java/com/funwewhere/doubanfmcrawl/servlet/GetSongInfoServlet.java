@@ -24,9 +24,9 @@ public class GetSongInfoServlet extends HttpServlet{
 		DoubanUtil douban;
 		try {
 			douban = new DoubanUtil(cookieString);
-			List<SongInfo> songInfos= douban.getSongInfosAndSave();
+			JSONArray songInfos = douban.getSongInfosAndSave();
 			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write(JSONArray.fromObject(songInfos).toString());
+			resp.getWriter().write(songInfos.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
