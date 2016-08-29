@@ -1,8 +1,18 @@
 body, textarea, select, input, button {
-    font-size: 12px;
+    font-size: 0.8em;
     color: #333;
     font-family: Arial, Helvetica, sans-serif;
     -webkit-text-size-adjust: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #333;
 }
 
 .text {
@@ -12,6 +22,10 @@ body, textarea, select, input, button {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.even td{
+	background-color: #f7f7f7;
 }
 
 .artist{
@@ -58,10 +72,24 @@ body, textarea, select, input, button {
 .data table{
 	width: 100%;
 	text-align: center;
+	border-collapse: collapse;
 }
 
 .data td{
 	text-align: center;
 	display: table-cell;
-    border-bottom: 2px solid #74d477;
+}
+
+.player-body{
+	width: 100%;
+    height: 4.5em;
+    background: #f7dbc7;
+    position: fixed;
+    bottom: 0em;
+}
+
+.bottom{
+	width: 100%;
+    height: 4.5em;
+    background: #f7dbc7;
 }
