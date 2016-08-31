@@ -10,13 +10,18 @@
 <body>
 <div class='top'>
 	<div class='form'>
-		<input class="cookieString" name="cookieString" type="text" placeholder="将cookie粘贴到这"/><input type="button" value="获取" onclick="DoubanCrawl.getSongInfo($('.cookieString').val())"/>
+		<input class="cookieString" name="cookieString" type="text" placeholder="将cookie粘贴到这"/><input type="button" value="Get" onclick="DoubanCrawl.getSongInfo($('.cookieString').val())"/>
 	</div>
 </div>
 <div class="data-body">
 	<div class="data">
 		<table>
 		</table>
+		<div>
+			<a class="changePageIndex" target="_blank" onclick="DoubanCrawl.changePageIndex(parseInt($('#nowPageIndex').html())-1)">last</a>
+			<span id="nowPageIndex">1</span>
+			<a class="changePageIndex" target="_blank" onclick="DoubanCrawl.changePageIndex(parseInt($('#nowPageIndex').html())+1)">next</a>
+		</div>
 	</div>
 </div>
 <div class='player-body'>

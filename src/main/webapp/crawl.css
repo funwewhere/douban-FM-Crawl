@@ -45,7 +45,7 @@ a:hover {
     border-radius: 5px 0 0 5px;
 }
 
-.cookieString+input{
+.cookieString+input[type=button]{
 	cursor: pointer;
 	width: 4em;
 	padding: 4px;
@@ -92,4 +92,16 @@ a:hover {
 	width: 100%;
     height: 4.5em;
     background: #f7dbc7;
+}
+
+.changePageIndex{
+	cursor: pointer;
+    font-size: 1.2em;
+    color: #ab6c16;
+}
+
+#nowPageIndex{
+	color: #e27b7b;
+    font-size: 1.2em;
+    margin: 1em;
 }
