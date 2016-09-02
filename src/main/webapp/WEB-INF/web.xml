@@ -13,4 +13,13 @@
   	<servlet-name>getSongInfo</servlet-name>
   	<url-pattern>/getSongInfo</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>download</servlet-name>
+  	<servlet-class>com.funwewhere.doubanfmcrawl.servlet.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>download</servlet-name>
+  	<url-pattern>/download</url-pattern>
+  </servlet-mapping>
 </web-app>

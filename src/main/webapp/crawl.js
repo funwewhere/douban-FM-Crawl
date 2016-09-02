@@ -17,18 +17,7 @@ DoubanCrawl = {
 	        	if(data.length%DoubanCrawl.pageCount > 0){
 	        		++DoubanCrawl.pageSize;
 	        	}
-	        	var html = "";
-	        	var start = 0;
-	        	var end = data.length < DoubanCrawl.pageCount ? data.length : DoubanCrawl.pageCount;
-	        	for(var i = start; i < end; ++i){
-	        		var minute =  Math.floor(data[i].length/60);
-	        		var second = data[i].length%60;
-	        		minute = DoubanCrawl.fillPosition(2, minute);
-	        		second = DoubanCrawl.fillPosition(2, second);
-	        		var artist = data[i].artist;
-	        		html += "<tr class='" + (i % 2 == 0?'even':'') + "'><td><span class='sn'>" + (i+1) +"</span></td><td>" + data[i].title + "</td><td><div class='artist text'><span title='"+ data[i].artist +"'>" + data[i].artist + "</span></div></td><td>" + minute + ":" + second + "</td><td><a href='" + data[i].url + "' target='_Blank'>试   听</a></td></tr>";
-	        	}
-	        	$(".data table").append(html);
+				DoubanCrawl.changePageIndex(1);
 	        }
 	    }); 
 	},
@@ -44,11 +33,15 @@ DoubanCrawl = {
     		minute = DoubanCrawl.fillPosition(2, minute);
     		second = DoubanCrawl.fillPosition(2, second);
     		var artist = DoubanCrawl.songData[i].artist;
-    		html += "<tr class='" + (i % 2 == 0?'even':'') + "'><td><span class='sn'>" + (i+1) +"</span></td><td>" + DoubanCrawl.songData[i].title + "</td><td><div class='artist text'><span title='"+ DoubanCrawl.songData[i].artist +"'>" + DoubanCrawl.songData[i].artist + "</span></div></td><td>" + minute + ":" + second + "</td><td><a href='" + DoubanCrawl.songData[i].url + "' target='_Blank'>试   听</a></td></tr>";
+    		html += "<tr class='" + (i % 2 == 0?'even':'') + "'><td><span class='sn'>" + (i+1) +"</span></td><td><div class='title text'><span title='"+ DoubanCrawl.songData[i].title +"'>" + DoubanCrawl.songData[i].title + "</span></div></td><td><div class='artist text'><span title='"+ DoubanCrawl.songData[i].artist +"'>" + DoubanCrawl.songData[i].artist + "</span></div></td><td>" + minute + ":" + second + "</td><td><a href='" + DoubanCrawl.songData[i].url + "' target='_Blank'>试   听</a></td><td><a href=\"#\" target=\"_blank\" onclick=\"DoubanCrawl.download('"+DoubanCrawl.songData[i].artist +" - "+DoubanCrawl.songData[i].title+"', '"+DoubanCrawl.songData[i].url+"')\">下载</a></td></tr>";
     	}
-    	$(".data table").empty();
-    	$(".data table").append(html);
+    	$(".data table").html(html);
     	$('#nowPageIndex').text(pageIndex);
+	},
+	download:function(songName, url){
+		songName=encodeURIComponent(songName);
+		url=encodeURIComponent(url);
+		window.open("download?songName=" + songName + "&url=" + url);
 	},
 	fillPosition:function(pn, num){
 		num = num.toString();

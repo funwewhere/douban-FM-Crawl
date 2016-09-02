@@ -115,7 +115,7 @@ public class WebRequestUtil {
 	    
 	    HttpGet get = new HttpGet(requsetUrl);
 	    
-	    //设置超时时间
+	    //设置超时时间e
 	    RequestConfig requestConfig = RequestConfig.custom()
 	    		.setConnectionRequestTimeout(15000)
 	    		.setConnectTimeout(15000)
@@ -136,4 +136,8 @@ public class WebRequestUtil {
 		return requestThread.call();
 	}
 
+	public static CloseableHttpClient getHttpClient() {
+		return httpClient;
+	}
+	
 }
