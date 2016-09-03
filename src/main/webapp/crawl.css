@@ -30,18 +30,16 @@ a:hover {
 
 .artist{
 	text-align: left;
-	width: 10em;
 }
 
 .title{
     float: left;
     text-align: center;
-    width: 35em;
 }
 
 .sn{
+    height: 23px;
     display: block;
-    width: 3em;
 }
 
 .top{
@@ -116,3 +114,29 @@ a:hover {
     font-size: 1.2em;
     margin: 1em;
 }
+
+.hshow {
+    display: none;
+}
+
+.data tr:hover .hshow {
+    float: left;
+    display: block;
+    position: relative;
+}
+
+.data tr:hover .songtime {
+    display: none;
+}
+
+.data th {
+    height: 38px;
+    background-color: #f7f7f7;
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    text-align: left;
+    font-weight: normal;
+    color: #666;
+    background: url(table.png) no-repeat 0 9999px;
+}
+

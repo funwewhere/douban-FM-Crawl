@@ -24,7 +24,7 @@ DoubanCrawl = {
 	changePageIndex:function(pageIndex){
 		pageIndex = pageIndex <= 1 ? 1 : pageIndex;
 		pageIndex = pageIndex >= DoubanCrawl.pageSize ? DoubanCrawl.pageSize : pageIndex;
-		var html = "";
+		var html = "<thead><tr><th class='first w1' style='width:3.2em;'></th><th style='width:50em;'><div class='wp'>标题</div></th><th class='w2-1' style='width:10em'><div class='wp'>歌手</div></th><th class='w3'><div class='wp'>时长</div></th></tr></thead><tbody>";
     	var start = (pageIndex - 1)*DoubanCrawl.pageCount;
     	var end = DoubanCrawl.songData.length < start +DoubanCrawl.pageCount ? DoubanCrawl.songData.length : start +DoubanCrawl.pageCount;
     	for(var i = start; i < end; ++i){
@@ -33,8 +33,13 @@ DoubanCrawl = {
     		minute = DoubanCrawl.fillPosition(2, minute);
     		second = DoubanCrawl.fillPosition(2, second);
     		var artist = DoubanCrawl.songData[i].artist;
-    		html += "<tr class='" + (i % 2 == 0?'even':'') + "'><td><span class='sn'>" + (i+1) +"</span></td><td><div class='title text'><span title='"+ DoubanCrawl.songData[i].title +"'>" + DoubanCrawl.songData[i].title + "</span></div></td><td><div class='artist text'><span title='"+ DoubanCrawl.songData[i].artist +"'>" + DoubanCrawl.songData[i].artist + "</span></div></td><td>" + minute + ":" + second + "</td><td><a href='" + DoubanCrawl.songData[i].url + "' target='_Blank'>试   听</a></td><td><a href=\"#\" target=\"_blank\" onclick=\"DoubanCrawl.download('"+DoubanCrawl.songData[i].artist +" - "+DoubanCrawl.songData[i].title+"', '"+DoubanCrawl.songData[i].url+"')\">下载</a></td></tr>";
+    		html += "<tr class='" + (i % 2 == 0?'even':'') + "'><td><span class='sn'>" + (i+1) +"</span></td><td><div class='title text'><span title='"+ DoubanCrawl.songData[i].title +"'>" + DoubanCrawl.songData[i].title + "</span></div></td>" +
+				"<td><div class='artist text'><span title='"+ DoubanCrawl.songData[i].artist +"'>" + DoubanCrawl.songData[i].artist + "</span></div></td>" +
+				"<td><span class='songtime'>" + minute + ":" + second + "</span>" +
+				"<div class='hshow'><a href='" + DoubanCrawl.songData[i].url + "' target='_Blank'>试   听</a>" +
+				"<a href=\"#\" target=\"_blank\" onclick=\"DoubanCrawl.download('"+DoubanCrawl.songData[i].artist +" - "+DoubanCrawl.songData[i].title+"', '"+DoubanCrawl.songData[i].url+"')\">下载</a></div></td></tr>";
     	}
+		html += "</tbody>";
     	$(".data table").html(html);
     	$('#nowPageIndex').text(pageIndex);
 	},
