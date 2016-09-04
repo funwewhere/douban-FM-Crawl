@@ -29,23 +29,24 @@ public class DownloadServlet extends HttpServlet{
 		String encodeName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", " ").replaceAll("%28", "\\(").replaceAll("%29", "\\)").replaceAll("%3B", ";").replaceAll("%40", "@").replaceAll("%23", "\\#").replaceAll("%26", "\\&").replaceAll("%2C", "\\,");
         resp.setContentType("application/x-msdownload");
         resp.setCharacterEncoding("utf-8");
-        resp.setHeader("Content-disposition", "attachment; filename=" + encodeName + ".mp3");
+        resp.setHeader("Content-disposition", "attachment;filename=\"" + encodeName + ".mp3\"");
         
         InputStream is = null;
 		ServletOutputStream fos = null;
 		try {
-			System.out.println("[" + fileName +  "]  下载begin.....");
-			CloseableHttpClient httpClient = WebRequestUtil.getHttpClient();
-			HttpGet get = new HttpGet(fileUrl);
-			CloseableHttpResponse response = httpClient.execute(get);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
+			System.out.println("[" + fileName +  "]  下载开始.....");
+//			HttpGet get = new HttpGet(fileUrl);
+//			CloseableHttpClient httpClient = WebRequestUtil.getHttpClient();
+//			CloseableHttpResponse response = httpClient .execute(get);
+//			HttpEntity entity = response.getEntity();
+//			is = entity.getContent();
+			is = WebRequestUtil.downloadFile(fileUrl);
 			fos = resp.getOutputStream();
-			//创建文件输出流
-			byte [] buffer=new byte[1024];//接收缓存
+			
+			byte [] buffer=new byte[1024];
 			int lengh = 0;
-			while((lengh = is.read(buffer) ) > 0){//接收
-				fos.write(buffer, 0, lengh);//写入文件
+			while((lengh = is.read(buffer)) != -1){
+				fos.write(buffer, 0, lengh);
 			}
 			System.out.println("[" + fileName +  "]  下载成功!");
 		} catch (Exception e) {

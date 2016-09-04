@@ -1,5 +1,7 @@
 package com.funwewhere.doubanfmcrawl.http;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -11,9 +13,12 @@ import java.util.Map.Entry;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -134,6 +139,13 @@ public class WebRequestUtil {
 		requestThread.start();
 		requestThread.join();
 		return requestThread.call();
+	}
+	
+	public static InputStream downloadFile(String fileUrl) throws ClientProtocolException, IOException {
+		HttpGet get = new HttpGet(fileUrl);
+		CloseableHttpResponse response = httpClient.execute(get);
+		HttpEntity entity = response.getEntity();
+		return entity.getContent();
 	}
 
 	public static CloseableHttpClient getHttpClient() {
