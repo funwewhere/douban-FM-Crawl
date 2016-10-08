@@ -131,15 +131,15 @@ public class DoubanUtil {
 		params.put("sids", sids);
 		String reponseBody = WebRequestUtil.requestByPost(getSongInfo_url, headers, params);
 		JSONArray jsonArray = JSONArray.fromObject(reponseBody);
-//		for (int j = 0; j < jsonArray.size(); ++j) {
-//			JSONObject jsonObject = jsonArray.getJSONObject(j);
-//			SongInfo songInfo = new SongInfo();
-//			songInfo.setSid(jsonObject.getString("sid"));
-//			songInfo.setArtist(jsonObject.getString("artist"));
-//			songInfo.setUrl(jsonObject.getString("url"));
-//			songInfo.setTitle(jsonObject.getString("title"));
-//			songInfos.add(songInfo);
-//		}
+		for (int j = 0; j < jsonArray.size(); ++j) {
+			JSONObject jsonObject = jsonArray.getJSONObject(j);
+			SongInfo songInfo = new SongInfo();
+			songInfo.setSid(jsonObject.getString("sid"));
+			songInfo.setArtist(jsonObject.getString("artist"));
+			songInfo.setUrl(jsonObject.getString("url"));
+			songInfo.setTitle(jsonObject.getString("title"));
+			songInfos.add(songInfo);
+		}
 		responseJson.addAll(jsonArray);
 	}
 	
@@ -169,9 +169,8 @@ public class DoubanUtil {
 	}
 
 	public void downloadSongs(String savePath) {
-		DownLoadThread.setSongs(songInfos);
+		DownLoadThread downLoadThread = new DownLoadThread(songInfos, savePath);
 		for(int i = 0; i < 3; ++i){
-			DownLoadThread downLoadThread = new DownLoadThread(savePath);
 			Thread thread = new Thread(downLoadThread, "thread" + i);
 			thread.start();
 		}

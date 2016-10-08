@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-
 import com.funwewhere.doubanfmcrawl.http.WebRequestUtil;
 
 public class DownloadServlet extends HttpServlet{
@@ -40,7 +35,7 @@ public class DownloadServlet extends HttpServlet{
 //			CloseableHttpResponse response = httpClient .execute(get);
 //			HttpEntity entity = response.getEntity();
 //			is = entity.getContent();
-			is = WebRequestUtil.downloadFile(fileUrl);
+			is = WebRequestUtil.getResponseStream(fileUrl);
 			fos = resp.getOutputStream();
 			
 			byte [] buffer=new byte[1024];

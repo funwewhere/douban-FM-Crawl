@@ -1,5 +1,8 @@
 package com.funwewhere.doubanfmcrawl.http;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
@@ -11,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.ServletOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -141,11 +145,46 @@ public class WebRequestUtil {
 		return requestThread.call();
 	}
 	
-	public static InputStream downloadFile(String fileUrl) throws ClientProtocolException, IOException {
+	public static InputStream getResponseStream(String fileUrl) throws ClientProtocolException, IOException {
 		HttpGet get = new HttpGet(fileUrl);
 		CloseableHttpResponse response = httpClient.execute(get);
 		HttpEntity entity = response.getEntity();
 		return entity.getContent();
+	}
+	
+	public static boolean downloadFile(String fileUrl,String filePath) {
+		InputStream is = null;
+		FileOutputStream fos = null;
+		try {
+			is = getResponseStream(fileUrl);
+			File file = new File(filePath);
+//			if (!file.exists()) {
+//				file.mkdirs();
+//			}
+			fos = new FileOutputStream(file);
+			byte [] buffer=new byte[2048];
+			int lengh = 0;
+			while((lengh = is.read(buffer)) != -1){
+				fos.write(buffer, 0, lengh);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				if(fos != null){
+					fos.flush();
+					fos.close();
+				}
+				if(is != null){
+					is.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static CloseableHttpClient getHttpClient() {
