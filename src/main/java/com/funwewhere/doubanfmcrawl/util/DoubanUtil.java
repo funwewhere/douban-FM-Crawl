@@ -19,9 +19,9 @@ import net.sf.json.JSONObject;
 public class DoubanUtil {
 	
 	private static Map<String,String> headers;
-	
+
 	private static HashMap<String, String> params;
-	
+
 	private static int increase = 50;
 
 	private static String getSongInfo_url = "https://douban.fm/j/v2/redheart/songs";
@@ -29,9 +29,9 @@ public class DoubanUtil {
 	private static String getSongSids_url = "https://douban.fm/j/v2/redheart/basic";
 
 	private static List<SongInfo> songInfos = null;
-	
+
 	private static JSONArray responseJson = new JSONArray();
-	
+
 	static{
 		headers = new HashMap<>();
 		headers.put("Host", "douban.fm");
@@ -45,7 +45,7 @@ public class DoubanUtil {
 //		headers.put("Accept-Encoding", "gzip, deflate, sdch, br");
 //		headers.put("Content-Length", "212");
 //		headers.put("Origin", "https://douban.fm");
-		
+
 		params = new HashMap<String, String>();
 		params.put("kbps", "320");
 	}

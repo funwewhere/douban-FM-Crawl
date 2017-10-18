@@ -4,7 +4,7 @@
   <artifactId>douban.fm_Craw</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>douban.fm_Craw</name>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <dependencies>
      <dependency>
           <groupId>org.springframework</groupId>

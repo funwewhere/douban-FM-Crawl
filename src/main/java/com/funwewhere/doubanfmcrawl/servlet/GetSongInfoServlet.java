@@ -19,7 +19,7 @@ public class GetSongInfoServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String cookieString = req.getParameter("cookieString");
 		System.out.println(cookieString);
-		DoubanUtil douban;
+		DoubanUtil douban = null;
 		try {
 			douban = new DoubanUtil(cookieString);
 			JSONArray songInfos = douban.getSongInfosAndSave();
